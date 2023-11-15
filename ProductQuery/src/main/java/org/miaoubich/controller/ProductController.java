@@ -18,7 +18,7 @@ public class ProductController {
 
 	private final ProductService productService;
 	
-	@GetMapping
+	@GetMapping("/{id}")
 	public ResponseEntity<?> printProduct(@PathVariable Long id){
 		Product product = productService.findProduct(id);
 		

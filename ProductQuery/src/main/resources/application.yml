@@ -6,12 +6,13 @@ spring:
       bootstrap-servers: localhost:9092
       group-id: lina-group
       auto-offset-reset: earliest
-      key-deserializer: org.apache.kafka.common.serialization.StringSerializer
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      
       #Kafka can deserialize all the classes from this package
       properties:
         spring:
           json:
             trusted:
-              packages: 
+              packages: org.miaoubich.event
       
