@@ -9,4 +9,9 @@ spring:
       key-deserializer: org.apache.kafka.common.serialization.StringSerializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       #Kafka can deserialize all the classes from this package
-      #properties.spring.json.trusted.packages: *
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: 
+      
