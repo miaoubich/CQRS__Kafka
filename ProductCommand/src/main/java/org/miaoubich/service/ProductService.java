@@ -21,26 +21,30 @@ public class ProductService {
 	private final ProductRepository productRepository;
 	private final KafkaTemplate<String, ProductEvent> kafkaTemplate;
 	
-	public String addProduct(ProductEvent productDto) {
-		Product product = productRepository.save(productDto.getProduct());
-		ProductEvent productEvent = new ProductEvent("creatProduct", product);
-		kafkaTemplate.send(topic, productEvent);
-		String result = String.format("Product with ID: %s added successfully", product);
+	public String addProduct(ProductEvent productEvent) {
+		Product product = productRepository.save(productEvent.getProduct());
+		ProductEvent event = new ProductEvent("creatProduct", product);
+		kafkaTemplate.send(topic, event);
+		String result = String.format("Product with ID: %s added successfully", product.getId());
 		
 		return result;
 	}
 	
-	public Product updateProduct(Long id, Product product) {
+	public Product updateProduct(Long id, ProductEvent productEvent) {
 		Optional<Product> existProduct = productRepository.findById(id);
+		Product product = productEvent.getProduct();
 		
 		if(!existProduct.isEmpty()) {
 			existProduct.get().setName(product.getName());
 			existProduct.get().setPrice(product.getPrice());
 			existProduct.get().setQuantity(product.getQuantity());
 			productRepository.save(existProduct.get());
-			ProductEvent productEvent = new ProductEvent("updateProduct", product);
-			kafkaTemplate.send(topic, productEvent);
+			ProductEvent event = new ProductEvent("updateProduct", product);
+			kafkaTemplate.send(topic, event);
 		}
+		else
+			throw new NullPointerException(String.format("Product with ID %s doesn't exist.", id));
+		
 		return existProduct.get();
 	}
 	
