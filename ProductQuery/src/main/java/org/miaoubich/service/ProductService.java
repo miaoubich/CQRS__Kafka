@@ -37,7 +37,7 @@ public class ProductService {
 		if(productEvent.getType().equals("creatProduct")) {
 			productRepository.save(product);
 		}
-		else if(productEvent.getType().equals("creatProduct")){
+		else if(productEvent.getType().equals("updateProduct")){
 			Product existProduct = productRepository.findById(product.getId()).get();
 			existProduct.setName(product.getName());
 			existProduct.setPrice(product.getPrice());
