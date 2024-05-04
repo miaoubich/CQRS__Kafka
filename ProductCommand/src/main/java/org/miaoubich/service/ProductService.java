@@ -23,7 +23,7 @@ public class ProductService {
 	
 	public String addProduct(ProductEvent productEvent) {
 		Product product = productRepository.save(productEvent.getProduct());
-		ProductEvent event = new ProductEvent("creatProduct", product);
+		ProductEvent event = new ProductEvent("createProduct", product);
 		kafkaTemplate.send(topic, event);
 		String result = String.format("Product with ID: %s added successfully", product.getId());
 		
